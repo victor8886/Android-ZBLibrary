@@ -19,17 +19,22 @@ import zblibrary.demo.model.User;
 import zuo.biao.library.base.BaseModel;
 import zuo.biao.library.base.BaseView;
 import zuo.biao.library.ui.WebViewActivity;
-import zuo.biao.library.util.ImageLoaderUtil;
+import zuo.biao.library.util.CommonUtil;
 import zuo.biao.library.util.Log;
 import zuo.biao.library.util.StringUtil;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 /**用户View
  * @author Lemon
@@ -65,14 +70,14 @@ public class UserView extends BaseView<User> implements OnClickListener {
 	public View createView(LayoutInflater inflater) {
 		convertView = inflater.inflate(R.layout.user_view, null);
 
-		ivUserViewHead = findViewById(R.id.ivUserViewHead, this);
-		ivUserViewStar = findViewById(R.id.ivUserViewStar, this);
+		ivUserViewHead = findView(R.id.ivUserViewHead, this);
+		ivUserViewStar = findView(R.id.ivUserViewStar, this);
 
-		tvUserViewSex = findViewById(R.id.tvUserViewSex, this);
+		tvUserViewSex = findView(R.id.tvUserViewSex, this);
 
-		tvUserViewName = findViewById(R.id.tvUserViewName);
-		tvUserViewId = findViewById(R.id.tvUserViewId);
-		tvUserViewNumber = findViewById(R.id.tvUserViewNumber);
+		tvUserViewName = findView(R.id.tvUserViewName);
+		tvUserViewId = findView(R.id.tvUserViewId);
+		tvUserViewNumber = findView(R.id.tvUserViewNumber);
 
 		return convertView;
 	}
@@ -85,7 +90,14 @@ public class UserView extends BaseView<User> implements OnClickListener {
 		}
 		this.data = data;
 
-		ImageLoaderUtil.loadImage(ivUserViewHead, data.getHead(), ImageLoaderUtil.TYPE_OVAL);
+		Glide.with(context).asBitmap().load(data.getHead()).into(new SimpleTarget<Bitmap>() {
+
+			@Override
+			public void onResourceReady(Bitmap bitmap, Transition<? super Bitmap> transition) {
+				ivUserViewHead.setImageBitmap(CommonUtil.toRoundCorner(bitmap, bitmap.getWidth()/2));
+			}
+		});
+		
 		ivUserViewStar.setImageResource(data.getStarred() ? R.drawable.star_light : R.drawable.star);
 
 		tvUserViewSex.setBackgroundResource(data.getSex() == User.SEX_FEMALE

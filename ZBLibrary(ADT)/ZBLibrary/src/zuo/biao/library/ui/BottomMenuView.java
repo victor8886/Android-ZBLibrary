@@ -74,8 +74,7 @@ public class BottomMenuView extends BaseView<List<Menu>> {
 		this.inflater = inflater;
 		convertView = inflater.inflate(R.layout.bottom_menu_view, null);
 
-		llBottomMenuViewMainItemContainer = (LinearLayout) 
-				convertView.findViewById(R.id.llBottomMenuViewMainItemContainer);
+		llBottomMenuViewMainItemContainer = findView(R.id.llBottomMenuViewMainItemContainer);
 
 		return convertView;
 	}
@@ -147,7 +146,7 @@ public class BottomMenuView extends BaseView<List<Menu>> {
 		ImageView iv = (ImageView) ll.findViewById(R.id.ivIconNameIcon);
 		TextView tv = (TextView) ll.findViewById(R.id.tvIconNameName);
 		try {
-			iv.setImageResource(isMoreButton ? R.drawable.up2_light : fsb.getImageRes());
+			iv.setImageResource(isMoreButton ? R.drawable.up_light : fsb.getImageRes());
 		} catch (Exception e) {
 			Log.e(TAG, "addItem try {" +
 					" iv.setImageResource(fsb.getImageRes()); " + e.getMessage() + ">> return;");
